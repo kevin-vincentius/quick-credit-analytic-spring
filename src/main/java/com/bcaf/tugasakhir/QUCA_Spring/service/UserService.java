@@ -8,6 +8,7 @@ import com.bcaf.tugasakhir.QUCA_Spring.repo.SessionRepo;
 import com.bcaf.tugasakhir.QUCA_Spring.repo.UserRepo;
 import com.bcaf.tugasakhir.QUCA_Spring.security.BcryptImpl;
 import com.bcaf.tugasakhir.QUCA_Spring.util.GlobalFunction;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -72,6 +73,25 @@ public class UserService {
 
         } catch(Exception e){
             return GlobalFunction.requestFailed(null, HttpStatus.BAD_REQUEST, "Login gagal");
+        }
+
+    }
+
+    public ResponseEntity<Object> logout(HttpServletRequest request) {
+        try {
+            String sessionId = request.getHeader("X-Session") != null ? request.getHeader("X-Session") : null;
+
+            Optional<Session> existingSession = sessionRepo.findBySessionId(sessionId);
+            if (sessionId == null || existingSession.isEmpty()) {
+                return GlobalFunction.requestFailed(null, HttpStatus.FORBIDDEN, "Anda tidak terotorisasi");
+            }
+            Session session = existingSession.get();
+
+            sessionRepo.delete(session);
+            return GlobalFunction.requestSuccess(null, null, HttpStatus.OK, "Logout berhasil!");
+
+        } catch(Exception e){
+            return GlobalFunction.requestFailed(null, HttpStatus.BAD_REQUEST, "Logout gagal");
         }
 
     }

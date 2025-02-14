@@ -1,6 +1,6 @@
 package com.bcaf.tugasakhir.QUCA_Spring.dto.req;
 
-public class ReqRejectFormQUCA {
+public class ReqRejectFormQUCADTO {
     private Long MID;
     private String notes;
 

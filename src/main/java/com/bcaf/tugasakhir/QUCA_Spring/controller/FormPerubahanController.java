@@ -1,15 +1,11 @@
 package com.bcaf.tugasakhir.QUCA_Spring.controller;
 
-import com.bcaf.tugasakhir.QUCA_Spring.model.FormPerubahanBobotScore;
+import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqFormPerubahan;
 import com.bcaf.tugasakhir.QUCA_Spring.service.BobotScoreService;
-import com.bcaf.tugasakhir.QUCA_Spring.service.QUCAService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/form-perubahan")
@@ -28,8 +24,18 @@ public class FormPerubahanController {
         return bobotScoreService.getDetailFormPerubahanBobotScore(idFormPerubahanBobotScore, request);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<Object> addNewFormPerubahan(@RequestBody ReqFormPerubahan reqFormPerubahanBobotScoreDTO, HttpServletRequest request){
+        return bobotScoreService.addNewFormPerubahan(reqFormPerubahanBobotScoreDTO, request);
+    }
 
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<Object> rejectFormPerubahan(@PathVariable(value = "id") Long idFormPerubahan, HttpServletRequest request){
+        return bobotScoreService.rejectFormPerubahan(idFormPerubahan, request);
+    }
 
-
-
+    @PutMapping("/{id}/approve")
+    public ResponseEntity<Object> approveFormPerubahan(@PathVariable(value = "id") Long idFormPerubahan, HttpServletRequest request){
+        return bobotScoreService.approveFormPerubahan(idFormPerubahan, request);
+    }
 }

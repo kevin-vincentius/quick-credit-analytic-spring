@@ -1,8 +1,8 @@
 package com.bcaf.tugasakhir.QUCA_Spring.controller;
 
-import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqNewFormQUCA;
-import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqRejectFormQUCA;
-import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqUpdateFormQUCA;
+import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqNewFormQUCADTO;
+import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqRejectFormQUCADTO;
+import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqUpdateFormQUCADTO;
 import com.bcaf.tugasakhir.QUCA_Spring.service.QUCAService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +32,17 @@ public class FormQUCAController {
     }
 
     @PostMapping("/new-form")
-    public ResponseEntity<Object> submitFormQUCA(@RequestBody ReqNewFormQUCA reqNewFormQUCA, HttpServletRequest request){
+    public ResponseEntity<Object> submitFormQUCA(@RequestBody ReqNewFormQUCADTO reqNewFormQUCA, HttpServletRequest request){
         return qucaService.submitFormQUCA(reqNewFormQUCA, request);
     }
 
     @PutMapping("/update-form")
-    public ResponseEntity<Object> updateFormQUCA(@RequestBody ReqUpdateFormQUCA reqUpdateFormQUCA, HttpServletRequest request){
+    public ResponseEntity<Object> updateFormQUCA(@RequestBody ReqUpdateFormQUCADTO reqUpdateFormQUCA, HttpServletRequest request){
         return qucaService.updateFormQUCA(reqUpdateFormQUCA, request);
     }
 
     @PutMapping("/reject-form")
-    public ResponseEntity<Object> rejectFormQUCA(@RequestBody ReqRejectFormQUCA reqRejectFormQUCA, HttpServletRequest request){
+    public ResponseEntity<Object> rejectFormQUCA(@RequestBody ReqRejectFormQUCADTO reqRejectFormQUCA, HttpServletRequest request){
         return qucaService.rejectFormQUCA(reqRejectFormQUCA, request);
     }
 

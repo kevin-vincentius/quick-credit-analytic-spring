@@ -1,8 +1,8 @@
 package com.bcaf.tugasakhir.QUCA_Spring.service;
 
-import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqNewFormQUCA;
-import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqRejectFormQUCA;
-import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqUpdateFormQUCA;
+import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqNewFormQUCADTO;
+import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqRejectFormQUCADTO;
+import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqUpdateFormQUCADTO;
 import com.bcaf.tugasakhir.QUCA_Spring.model.FormQUCA;
 import com.bcaf.tugasakhir.QUCA_Spring.model.MstMobileEntry;
 import com.bcaf.tugasakhir.QUCA_Spring.model.MstScore;
@@ -117,7 +117,7 @@ public class QUCAService {
         }
     }
 
-    public ResponseEntity<Object> submitFormQUCA(ReqNewFormQUCA reqNewFormQUCA, HttpServletRequest request) {
+    public ResponseEntity<Object> submitFormQUCA(ReqNewFormQUCADTO reqNewFormQUCA, HttpServletRequest request) {
         try {
             String sessionId = request.getHeader("X-Session") != null ? request.getHeader("X-Session") : null;
 
@@ -150,7 +150,7 @@ public class QUCAService {
         }
     }
 
-    public ResponseEntity<Object> updateFormQUCA(ReqUpdateFormQUCA reqUpdateFormQUCA, HttpServletRequest request) {
+    public ResponseEntity<Object> updateFormQUCA(ReqUpdateFormQUCADTO reqUpdateFormQUCA, HttpServletRequest request) {
         try {
             String sessionId = request.getHeader("X-Session") != null ? request.getHeader("X-Session") : null;
 
@@ -218,7 +218,7 @@ public class QUCAService {
     }
 
 
-    public ResponseEntity<Object> rejectFormQUCA(ReqRejectFormQUCA reqRejectFormQUCA, HttpServletRequest request) {
+    public ResponseEntity<Object> rejectFormQUCA(ReqRejectFormQUCADTO reqRejectFormQUCA, HttpServletRequest request) {
         try {
             String sessionId = request.getHeader("X-Session") != null ? request.getHeader("X-Session") : null;
 

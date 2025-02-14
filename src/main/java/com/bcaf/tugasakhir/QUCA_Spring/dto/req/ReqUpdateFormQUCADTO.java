@@ -1,6 +1,6 @@
 package com.bcaf.tugasakhir.QUCA_Spring.dto.req;
 
-public class ReqUpdateFormQUCA {
+public class ReqUpdateFormQUCADTO {
     private Long MID;
     private Short tabThdAngs;
     private Short angsThdPdpt;

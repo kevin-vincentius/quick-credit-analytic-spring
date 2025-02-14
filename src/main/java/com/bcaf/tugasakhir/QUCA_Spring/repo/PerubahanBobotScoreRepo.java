@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PerubahanBobotScoreRepo extends JpaRepository<FormPerubahanBobotScore, Long> {
     @Query(value = """
@@ -16,4 +17,8 @@ public interface PerubahanBobotScoreRepo extends JpaRepository<FormPerubahanBobo
             )
             """)
     List<FormPerubahanBobotScore> findByUserId(String idUser);
+
+    @Query("SELECT f FROM FormPerubahanBobotScore f WHERE f.idCabang.idCabang = :idCabang AND (f.statusFormPerubahan = 'ON REVIEW RM' OR f.statusFormPerubahan = 'ON REVIEW DD')")
+    List<FormPerubahanBobotScore> findExistingForm(Short idCabang);
+
 }

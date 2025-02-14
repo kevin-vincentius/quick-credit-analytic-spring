@@ -45,19 +45,19 @@ public class FormPerubahanBobotScore {
     private Float newBobotHasilSLIK;
 
     @Column(name = "CreatedAt", nullable = false)
+    @CreationTimestamp
     private LocalDate createdAt;
 
     @Column(name = "CreatedBy", nullable = false)
     private String createdBy;
 
-    @Column(name = "ApprovedBy", nullable = false)
-    private String approvedBy;
+    @Column(name = "ModifiedBy")
+    private String modifiedBy;
 
     @Column(name = "StatusFormPerubahan", nullable = false)
-    private String statusFormPerubahan; // ON REVIEW RM, ON REVIEW DD, APPROVED
+    private String statusFormPerubahan; // ON REVIEW RM, ON REVIEW DD, APPROVED, REJECTED
 
     //getter setter
-
     public Long getIdFormPerubahanBobotScore() {
         return idFormPerubahanBobotScore;
     }
@@ -154,12 +154,12 @@ public class FormPerubahanBobotScore {
         this.createdBy = createdBy;
     }
 
-    public String getApprovedBy() {
-        return approvedBy;
+    public String getModifiedBy() {
+        return modifiedBy;
     }
 
-    public void setApprovedBy(String approvedBy) {
-        this.approvedBy = approvedBy;
+    public void setModifiedBy(String modifiedBy) {
+        this.modifiedBy = modifiedBy;
     }
 
     public String getStatusFormPerubahan() {
