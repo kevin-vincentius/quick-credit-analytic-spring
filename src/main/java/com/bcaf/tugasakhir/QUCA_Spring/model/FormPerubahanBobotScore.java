@@ -21,7 +21,7 @@ public class FormPerubahanBobotScore {
     private MstCabang idCabang;
 
     @Column(name = "NewBobotTabThdAngs", nullable = false)
-    private Float newbobotTabThdAngs;
+    private Float newBobotTabThdAngs;
 
     @Column(name = "NewBobotAngsThdPdpt", nullable = false)
     private Float newBobotAngsThdPdpt;
@@ -48,8 +48,9 @@ public class FormPerubahanBobotScore {
     @CreationTimestamp
     private LocalDate createdAt;
 
-    @Column(name = "CreatedBy", nullable = false)
-    private String createdBy;
+    @ManyToOne
+    @JoinColumn(name = "CreatedBy", foreignKey = @ForeignKey(name = "fk-formperubahan-to-user"), nullable = false)
+    private MstUser createdBy;
 
     @Column(name = "ModifiedBy")
     private String modifiedBy;
@@ -62,6 +63,14 @@ public class FormPerubahanBobotScore {
         return idFormPerubahanBobotScore;
     }
 
+    public Float getNewBobotTabThdAngs() {
+        return newBobotTabThdAngs;
+    }
+
+    public void setNewBobotTabThdAngs(Float newBobotTabThdAngs) {
+        this.newBobotTabThdAngs = newBobotTabThdAngs;
+    }
+
     public void setIdFormPerubahanBobotScore(Long idFormPerubahanBobotScore) {
         this.idFormPerubahanBobotScore = idFormPerubahanBobotScore;
     }
@@ -72,14 +81,6 @@ public class FormPerubahanBobotScore {
 
     public void setIdCabang(MstCabang idCabang) {
         this.idCabang = idCabang;
-    }
-
-    public Float getNewbobotTabThdAngs() {
-        return newbobotTabThdAngs;
-    }
-
-    public void setNewbobotTabThdAngs(Float newbobotTabThdAngs) {
-        this.newbobotTabThdAngs = newbobotTabThdAngs;
     }
 
     public Float getNewBobotAngsThdPdpt() {
@@ -146,11 +147,11 @@ public class FormPerubahanBobotScore {
         this.createdAt = createdAt;
     }
 
-    public String getCreatedBy() {
+    public MstUser getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(MstUser createdBy) {
         this.createdBy = createdBy;
     }
 

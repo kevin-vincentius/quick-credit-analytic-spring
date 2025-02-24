@@ -108,6 +108,8 @@ public class BobotScoreService {
                 return GlobalFunction.requestFailed(null, HttpStatus.FORBIDDEN, "Anda tidak terotorisasi");
             }
 
+            Optional<MstUser> user = userRepo.findById(existingSession.get().getIdUser());
+
             List<FormPerubahanBobotScore> formPerubahanExists = perubahanBobotScoreRepo.findExistingForm(reqFormPerubahanBobotScoreDTO.getIdCabang());
             if (!formPerubahanExists.isEmpty()) {
                 return GlobalFunction.requestFailed(null, HttpStatus.CONFLICT, "Ada form perubahan yang sedang pending!");
@@ -118,12 +120,12 @@ public class BobotScoreService {
                     + reqFormPerubahanBobotScoreDTO.getNewBobotHasilGetContact() + reqFormPerubahanBobotScoreDTO.getNewBobotKondisiTempatTinggal()
                     + reqFormPerubahanBobotScoreDTO.getNewBobotStatusPekerjaan() + reqFormPerubahanBobotScoreDTO.getNewBobotStatusTempatTinggal();
 
-            if (totalBobotScore != 1) {
+            if (totalBobotScore != 100) {
                 return GlobalFunction.requestFailed(null, HttpStatus.BAD_REQUEST, "Total bobot score belum 100%!");
             }
 
             FormPerubahanBobotScore newFormPerubahan = modelMapper.map(reqFormPerubahanBobotScoreDTO, FormPerubahanBobotScore.class);
-            newFormPerubahan.setCreatedBy(existingSession.get().getIdUser());
+            newFormPerubahan.setCreatedBy(user.get());
             newFormPerubahan.setStatusFormPerubahan("ON REVIEW RM");
             perubahanBobotScoreRepo.save(newFormPerubahan);
 
@@ -145,6 +147,12 @@ public class BobotScoreService {
 
             Optional<FormPerubahanBobotScore> optionalFormPerubahan = perubahanBobotScoreRepo.findById(idFormPerubahan);
             FormPerubahanBobotScore existingForm = optionalFormPerubahan.get();
+
+            if(Objects.equals(existingForm.getStatusFormPerubahan(), "APPROVED")) {
+                return GlobalFunction.requestFailed(null, HttpStatus.BAD_REQUEST, "Form sudah diapprove!");
+            } else if(Objects.equals(existingForm.getStatusFormPerubahan(), "REJECTED")) {
+                return GlobalFunction.requestFailed(null, HttpStatus.BAD_REQUEST, "Form sudah direject!!");
+            }
 
             existingForm.setStatusFormPerubahan("REJECTED");
             existingForm.setModifiedBy(existingSession.get().getIdUser());
@@ -178,12 +186,12 @@ public class BobotScoreService {
             } else if(Objects.equals(existingForm.getStatusFormPerubahan(), "APPROVED")){
                 return GlobalFunction.requestFailed(null, HttpStatus.BAD_REQUEST, "Form sudah di approve!");
             } else if(Objects.equals(existingForm.getStatusFormPerubahan(), "ON REVIEW DD")){
-                if(aksesId != 3){
+                if(aksesId != 4){
                     return GlobalFunction.requestFailed(null, HttpStatus.UNAUTHORIZED, "Anda bukan DD!");
                 }
                 existingForm.setStatusFormPerubahan("APPROVED");
             } else if(Objects.equals(existingForm.getStatusFormPerubahan(), "ON REVIEW RM")){
-                if(aksesId != 2){
+                if(aksesId != 3){
                     return GlobalFunction.requestFailed(null, HttpStatus.UNAUTHORIZED, "Anda bukan RM!");
                 }
                 existingForm.setStatusFormPerubahan("ON REVIEW DD");

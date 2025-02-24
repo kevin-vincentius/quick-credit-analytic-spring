@@ -2,6 +2,7 @@ package com.bcaf.tugasakhir.QUCA_Spring.service;
 
 import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqLoginDTO;
 import com.bcaf.tugasakhir.QUCA_Spring.dto.resp.RespLoginDTO;
+import com.bcaf.tugasakhir.QUCA_Spring.model.MstCabang;
 import com.bcaf.tugasakhir.QUCA_Spring.model.MstUser;
 import com.bcaf.tugasakhir.QUCA_Spring.model.Session;
 import com.bcaf.tugasakhir.QUCA_Spring.repo.SessionRepo;
@@ -16,9 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -89,6 +88,27 @@ public class UserService {
 
             sessionRepo.delete(session);
             return GlobalFunction.requestSuccess(null, null, HttpStatus.OK, "Logout berhasil!");
+
+        } catch(Exception e){
+            return GlobalFunction.requestFailed(null, HttpStatus.BAD_REQUEST, "Logout gagal");
+        }
+
+    }
+
+    public ResponseEntity<Object> getListCabang(HttpServletRequest request) {
+        try {
+            String sessionId = request.getHeader("X-Session") != null ? request.getHeader("X-Session") : null;
+
+            Optional<Session> existingSession = sessionRepo.findBySessionId(sessionId);
+            if (sessionId == null || existingSession.isEmpty()) {
+                return GlobalFunction.requestFailed(null, HttpStatus.FORBIDDEN, "Anda tidak terotorisasi");
+            }
+            Session session = existingSession.get();
+            Optional<MstUser> optionalUser = userRepo.findById(session.getIdUser());
+            MstUser user = optionalUser.get();
+            Set<MstCabang> listCabang = user.getListCabang();
+
+            return GlobalFunction.requestSuccess(listCabang, null, HttpStatus.OK, "Get list cabang berhasil!");
 
         } catch(Exception e){
             return GlobalFunction.requestFailed(null, HttpStatus.BAD_REQUEST, "Logout gagal");

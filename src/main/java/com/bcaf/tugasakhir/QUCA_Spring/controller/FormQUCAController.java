@@ -36,17 +36,17 @@ public class FormQUCAController {
         return qucaService.submitFormQUCA(reqNewFormQUCA, request);
     }
 
-    @PutMapping("/update-form")
+    @PostMapping("/update-form")
     public ResponseEntity<Object> updateFormQUCA(@RequestBody ReqUpdateFormQUCADTO reqUpdateFormQUCA, HttpServletRequest request){
         return qucaService.updateFormQUCA(reqUpdateFormQUCA, request);
     }
 
-    @PutMapping("/reject-form")
+    @PostMapping("/reject-form")
     public ResponseEntity<Object> rejectFormQUCA(@RequestBody ReqRejectFormQUCADTO reqRejectFormQUCA, HttpServletRequest request){
         return qucaService.rejectFormQUCA(reqRejectFormQUCA, request);
     }
 
-    @PutMapping("/approve-form/{mid}")
+    @PostMapping("/approve-form/{mid}")
     public ResponseEntity<Object> approveFormQUCA(@PathVariable(value = "mid") Long MID, HttpServletRequest request){
         return qucaService.approveFormQUCA(MID, request);
     }

@@ -29,12 +29,12 @@ public class FormPerubahanController {
         return bobotScoreService.addNewFormPerubahan(reqFormPerubahanBobotScoreDTO, request);
     }
 
-    @PutMapping("/{id}/reject")
+    @PostMapping("/{id}/reject")
     public ResponseEntity<Object> rejectFormPerubahan(@PathVariable(value = "id") Long idFormPerubahan, HttpServletRequest request){
         return bobotScoreService.rejectFormPerubahan(idFormPerubahan, request);
     }
 
-    @PutMapping("/{id}/approve")
+    @PostMapping("/{id}/approve")
     public ResponseEntity<Object> approveFormPerubahan(@PathVariable(value = "id") Long idFormPerubahan, HttpServletRequest request){
         return bobotScoreService.approveFormPerubahan(idFormPerubahan, request);
     }

@@ -34,12 +34,34 @@ public class MstMobileEntry {
     @Column(name = "Tabungan", nullable = false)
     private Double tabungan;
 
+    @Column(name = "DomisiliKonsumen", nullable = false)
+    private String domisiliKonsumen;
+
+    @Column(name = "Zipcode", nullable = false)
+    private Long zipcode;
+
     public Long getMID() {
         return MID;
     }
 
     public void setMID(Long MID) {
         this.MID = MID;
+    }
+
+    public Long getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(Long zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getDomisiliKonsumen() {
+        return domisiliKonsumen;
+    }
+
+    public void setDomisiliKonsumen(String domisiliKonsumen) {
+        this.domisiliKonsumen = domisiliKonsumen;
     }
 
     public String getNamaKonsumen() {

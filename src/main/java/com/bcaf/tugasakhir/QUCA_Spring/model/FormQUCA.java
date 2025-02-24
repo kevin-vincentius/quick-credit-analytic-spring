@@ -26,6 +26,9 @@ public class FormQUCA {
     @Column(name = "IdMarketingOfficer", nullable = false)
     private String idMarketingOfficer;
 
+    @Column(name = "IdCabang", nullable = false)
+    private Short idCabang;
+
     @Column(name = "StatusQUCA", nullable = false)
     private String statusQUCA;
     // ON REVIEW, NEED REVISION, APPROVED
@@ -97,6 +100,14 @@ public class FormQUCA {
 
     public void setAngsThdPdpt(Short angsThdPdpt) {
         this.angsThdPdpt = angsThdPdpt;
+    }
+
+    public Short getIdCabang() {
+        return idCabang;
+    }
+
+    public void setIdCabang(Short idCabang) {
+        this.idCabang = idCabang;
     }
 
     public MstMobileEntry getMID() {

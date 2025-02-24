@@ -3,14 +3,8 @@ package com.bcaf.tugasakhir.QUCA_Spring.service;
 import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqNewFormQUCADTO;
 import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqRejectFormQUCADTO;
 import com.bcaf.tugasakhir.QUCA_Spring.dto.req.ReqUpdateFormQUCADTO;
-import com.bcaf.tugasakhir.QUCA_Spring.model.FormQUCA;
-import com.bcaf.tugasakhir.QUCA_Spring.model.MstMobileEntry;
-import com.bcaf.tugasakhir.QUCA_Spring.model.MstScore;
-import com.bcaf.tugasakhir.QUCA_Spring.model.Session;
-import com.bcaf.tugasakhir.QUCA_Spring.repo.MobileEntryRepo;
-import com.bcaf.tugasakhir.QUCA_Spring.repo.QUCARepo;
-import com.bcaf.tugasakhir.QUCA_Spring.repo.ScoreRepo;
-import com.bcaf.tugasakhir.QUCA_Spring.repo.SessionRepo;
+import com.bcaf.tugasakhir.QUCA_Spring.model.*;
+import com.bcaf.tugasakhir.QUCA_Spring.repo.*;
 import com.bcaf.tugasakhir.QUCA_Spring.util.GlobalFunction;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -22,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -39,9 +35,14 @@ public class QUCAService {
     @Autowired
     private SessionRepo sessionRepo;
 
+    @Autowired
+    private UserRepo userRepo;
+
     private ModelMapper modelMapper = new ModelMapper();
 
     public ResponseEntity<Object> getListFormQUCA(HttpServletRequest request) {
+        // list form sesuai dengan cabang yang ditempati user
+        //
         try {
             String sessionId = request.getHeader("X-Session") != null ? request.getHeader("X-Session") : null;
 
@@ -51,8 +52,12 @@ public class QUCAService {
             }
 
             Session session = existingSession.get();
+            Optional<MstUser> optionalUser = userRepo.findById(session.getIdUser());
+            MstUser currentUser = optionalUser.get();
 
-            List<FormQUCA> listFormQUCA = qucaRepo.findByIdMarketingOfficer(session.getIdUser());
+            Set<Short> supervisedBranchIds = currentUser.getListCabang().stream()
+                    .map(MstCabang::getIdCabang)
+                    .collect(Collectors.toSet());            List<FormQUCA> listFormQUCA = qucaRepo.findByIdCabangIn(supervisedBranchIds);
 
             return GlobalFunction.requestSuccess(listFormQUCA, null, HttpStatus.OK, "Sukses mengambil list form!");
         } catch (Exception e) {
@@ -132,6 +137,9 @@ public class QUCAService {
 
             MstMobileEntry mid = midExists.get();
 
+            Optional<MstUser> optionalUser = userRepo.findById(existingSession.get().getIdUser());
+            MstUser currentUser = optionalUser.get();
+
             // get id score sesuai cabang
             Optional<MstScore> optionalMstScore = scoreRepo.findByIdCabang_IdCabang(mid.getIdCabang().getIdCabang());
             MstScore mstScore = optionalMstScore.get();
@@ -141,6 +149,7 @@ public class QUCAService {
             formQUCA.setMID(mid);
             formQUCA.setStatusQUCA("ON REVIEW");
             formQUCA.setIdMarketingOfficer(mid.getIdMarketingOfficer().getIdUser());
+            formQUCA.setIdCabang(currentUser.getListCabang().iterator().next().getIdCabang());
             qucaRepo.save(formQUCA);
 
             return GlobalFunction.requestSuccess(null, null, HttpStatus.CREATED, "Sukses submit form!");
@@ -205,7 +214,7 @@ public class QUCAService {
                     (mstScore.getBobotStatusTempatTinggal() * existingForm.getStatusTempatTinggal()) +
                     (mstScore.getBobotStatusPekerjaan() * existingForm.getStatusPekerjaan());
 
-            existingForm.setTotalScore(hasilScore);
+            existingForm.setTotalScore(hasilScore / 100);
             existingForm.setStatusQUCA("APPROVED");
             existingForm.setApprovedBy(existingSession.get().getIdUser());
             qucaRepo.save(existingForm);

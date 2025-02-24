@@ -11,7 +11,6 @@ public class ReqNewFormQUCADTO {
     private Short karakterDiLingkungan;
     private Short hasilGetContact;
     private Short hasilSLIK;
-    private String createdBy;
 
     public Long getMID() {
         return MID;
@@ -93,11 +92,5 @@ public class ReqNewFormQUCADTO {
         this.hasilSLIK = hasilSLIK;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
 }

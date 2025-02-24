@@ -17,6 +17,4 @@ public class ScoreController {
     public ResponseEntity<Object> getScoreForBranch(@PathVariable( value = "idCabang") Short idCabang, HttpServletRequest request){
         return bobotScoreService.getScoreForBranch(idCabang, request);
     }
-
-
 }
